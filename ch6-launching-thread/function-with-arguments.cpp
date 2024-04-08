@@ -2,7 +2,7 @@
 #include <thread>
 #include <string>
 
-void hello(const std::string &str)
+void hello(std::string str)
 {
   std::cout << str << '\n';
 }
