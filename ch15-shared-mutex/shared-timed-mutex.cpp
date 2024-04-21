@@ -28,15 +28,15 @@ void write(int threadNumber)
 
 void read(int threadNumber)
 {
-  std::unique_lock lg{printMutex};
+  std::unique_lock lk{printMutex};
   std::cout << "Reader thread " << threadNumber << " trying to lock\n";
-  lg.unlock();
+  lk.unlock();
 
   std::shared_lock sl{shmut};
 
-  lg.lock();
+  lk.lock();
   std::cout << "Reader thread " << threadNumber << " has shared lock\n";
-  lg.unlock();
+  lk.unlock();
 
   std::cout << "Reader thread " << threadNumber << " releasing shared lock\n";
 }
