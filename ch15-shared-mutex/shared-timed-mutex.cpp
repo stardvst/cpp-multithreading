@@ -23,7 +23,9 @@ void write(int threadNumber)
   lk.unlock();
 
   std::this_thread::sleep_for(2s);
+  lk.lock();
   std::cout << "\tWriter thread " << threadNumber << " releasing exclusive lock\n";
+  lk.unlock();
 }
 
 void read(int threadNumber)
@@ -38,7 +40,9 @@ void read(int threadNumber)
   std::cout << "Reader thread " << threadNumber << " has shared lock\n";
   lk.unlock();
 
+  lk.lock();
   std::cout << "Reader thread " << threadNumber << " releasing shared lock\n";
+  lk.unlock();
 }
 
 int main()
