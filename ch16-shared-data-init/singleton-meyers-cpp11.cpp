@@ -16,12 +16,7 @@ protected:
   {
     std::cout << "Initializng singleton\n";
   }
-
-private:
-  static Singleton *m_instance;
 };
-
-Singleton *Singleton::m_instance = nullptr;
 
 void task()
 {
