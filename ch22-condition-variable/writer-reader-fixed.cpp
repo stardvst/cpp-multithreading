@@ -10,6 +10,7 @@ using namespace std::literals;
 std::mutex mutex;
 std::condition_variable cv;
 std::string text{"Empty"};
+bool done{false};
 
 void reader()
 {
@@ -18,7 +19,8 @@ void reader()
 
   // unlocks the mutex, and
   // waits for cv to be notified
-  cv.wait(lk);
+  cv.wait(lk, []
+          { return done; });
 
   // mutex is locked again
   // wake up and use the new value
@@ -38,6 +40,7 @@ void writer()
 
     // modify the data
     text = "Populated";
+    done = true;
   }
 
   // mutex is now unlocked
@@ -49,13 +52,10 @@ int main()
 {
   std::cout << "Data is " << text << '\n';
 
-  std::thread read{reader};
-  std::thread write{writer};
-
   // a problem with the code: lost wakeup
-  // std::thread write{writer};
-  // std::this_thread::sleep_for(500ms);
-  // std::thread read{reader};
+  std::thread write{writer};
+  std::this_thread::sleep_for(500ms);
+  std::thread read{reader};
 
   read.join();
   write.join();
